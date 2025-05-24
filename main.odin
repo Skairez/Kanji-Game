@@ -9,14 +9,34 @@ WINDOW_WIDTH :: 1000
 SOURCE_RECT_CLOUD :rl.Rectangle: {0, 0, 1200, 1200} // png cloud 1200 x 1200
 
 
+cloud_choices := 2
+
+// cloud_width := window_width / cloudchoices
+// assert(cloud_width > kanjipopins.width + 50)
+// for cloud, idx in clouds do 
+// draw_cloud(x = idx * cloud_width, y = ..)
+// elevate_cloud(cloud)
+// ...
+// slices or dynamic array
+//for loops everywhere where cloud 1 was
+//for cloud in clouds ...
+
+
 // globals
 kanji_font: rl.Font
 cloud_texture: rl.Texture
 
 
 
+
+
+
 main :: proc() {
 	fmt.println("Hellope!")
+
+	//clouds: [dynamic]Cloud
+
+	//append(&clouds, spawn_cloud(dvnisujdvn))
 	
 	//Set the width to 1000, each cloud is 250 wide = 4 clouds fit
 	rl.InitWindow(WINDOW_WIDTH, 1600, "KanjiDrop")
@@ -29,17 +49,7 @@ main :: proc() {
 
     i := 0
 
-	//start of cloud_pos
-	//cloud_pos := rl.Vector2{0,1400}
-
-	cloud1 := spawn_cloud({0, 1400}, number = 1, color = rl.WHITE)
-
-	//loud1 := Cloud{
-	//	rect = rl.Rectangle{0, 1400, 250, 250},
-	//	collision_rect = rl.Rectangle{0, 1400, 250, 250},
-	//	number = 1,
-	//	color = rl.WHITE,
-	//}
+	spawn_cloud(clouds, {0, 1400}, number = 1, color = rl.WHITE)
 
 	game_is_running := true
 
@@ -77,7 +87,5 @@ main :: proc() {
 		}
 
 		rl.EndDrawing()
-
-		
 	}
 }

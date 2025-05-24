@@ -11,7 +11,7 @@ Cloud :: struct {
 }
 
 
-spawn_cloud :: proc(position: rl.Vector2, width: f32 = 250, height: f32 = 250, color := rl.WHITE, number := 0) -> Cloud {
+spawn_cloud :: proc(clouds: &[dynamic]Cloud, position: rl.Vector2, width: f32 = 250, height: f32 = 250, color := rl.WHITE, number := 0) {
 	cloud := Cloud{
 		rect = rl.Rectangle{position.x, position.y, width, height},
 		collision_rect = {},
@@ -19,7 +19,7 @@ spawn_cloud :: proc(position: rl.Vector2, width: f32 = 250, height: f32 = 250, c
 		color = color,
 	}
 	update_cloud_collision(&cloud)
-	return cloud
+	append(clouds, cloud)
 }
 
 reset_cloud :: proc(cloud: ^Cloud) {
