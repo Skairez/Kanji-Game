@@ -1,5 +1,17 @@
 package game
 
+import rl "vendor:raylib"
+
+load_kanji_font :: proc(kanjiFontPath: cstring = "Fonts/JiyunoTsubasa.ttf", kanjiFontSize: i32 = 512) -> rl.Font {
+	kanjiFont := rl.LoadFontEx(
+		kanjiFontPath,
+		kanjiFontSize,
+		cast([^]rune)(raw_data(custom_kanji_codepoints)),
+		custom_kanji_codepoint_count,
+	)
+	return kanjiFont
+}
+
 
 Kanji :: enum int {
 	One = 0,
