@@ -3,15 +3,28 @@ package game
 import "core:fmt"
 import rl "vendor:raylib"
 
-KANJI_FONT_SIZE :: 150
-clouds :: 5
+KANJI_FONT_SIZE :: 100
+CLOUD_HITBOX_OFFSET :: 75 // offset so that the hitbox triggers at the right time
+WINDOW_WIDTH :: 1000
+
+SOURCE_RECT_CLOUD :rl.Rectangle: {0, 0, 1200, 1200} // png cloud
+
+
+Cloud :: struct {
+	rect: rl.Rectangle,
+	collision_rect: rl.Rectangle,
+	number: int,
+	color: rl.Color,
+}
 
 
 main :: proc() {
 	fmt.println("Hellope!")
 
-	//Window size scales with Font size and amount of clouds we want
-	rl.InitWindow(KANJI_FONT_SIZE * clouds, 1600, "KanjiDrop")
+	cloud_one := Cloud{{0, 1400, }}
+	
+	//Set the width to 1000, each cloud is 250 wide = 4 clouds fit
+	rl.InitWindow(WINDOW_WIDTH, 1600, "KanjiDrop")
 	rl.SetTargetFPS(60)
 
 	//Load the 1200 * 1200 cloud png
@@ -32,9 +45,8 @@ main :: proc() {
     i := 0
 
 	//start of cloud_pos
-	cloud_pos := rl.Vector2{0,1400}
+	cloud_pos1 := rl.Vector2{0,1400}
 	game_is_running := true
-	SOURCE_RECT_CLOUD :rl.Rectangle: {0, 0, 1200, 1200} // png cloud
 
 	for !rl.WindowShouldClose() {
 		movable_kanji_rect := get_kanji_rect_at_mouse_x()
@@ -77,7 +89,7 @@ main :: proc() {
 }
 
 
-
+// rect_y is 200, this is where our character is fixed
 get_kanji_rect_at_mouse_x :: proc(rect_y: f32 = 200) -> rl.Rectangle {
 	rect_x := f32(rl.GetMouseX() - KANJI_FONT_SIZE / 2)
 	return rl.Rectangle{rect_x, rect_y, KANJI_FONT_SIZE, KANJI_FONT_SIZE}
