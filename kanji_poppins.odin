@@ -2,19 +2,21 @@ package game
 
 import rl "vendor:raylib"
 
-draw_kanji_poppins :: proc {
-	draw_kanji_poppins_int,
-	draw_kanji_poppins_kanji,
+
+KanjiPoppins :: struct {
+	asked_kanji: int, // index of the kanji the player has to know
+	rect: rl.Rectangle,
 }
 
-draw_kanji_poppins_int :: proc(kanji_poppins_rect: rl.Rectangle, kanji_letter: int) {
-    rl.DrawTextCodepoint(kanji_font, custom_kanji_codepoints[kanji_letter], {kanji_poppins_rect.x, kanji_poppins_rect.y}, KANJI_FONT_SIZE, rl.BLACK)
-	rl.DrawRectangleLinesEx(kanji_poppins_rect, 3, rl.ORANGE)
+randomize_asked_color :: proc(kanji_poppins: ^KanjiPoppins) {
+	random_color_index := int(rl.GetRandomValue(10, 18));
+	kanji_poppins.asked_kanji = random_color_index
 }
 
-draw_kanji_poppins_kanji :: proc(kanji_poppins_rect: rl.Rectangle, kanji_letter: Kanji) {
-    rl.DrawTextCodepoint(kanji_font, custom_kanji_codepoints[kanji_letter], {kanji_poppins_rect.x, kanji_poppins_rect.y}, KANJI_FONT_SIZE, rl.BLACK)
-	rl.DrawRectangleLinesEx(kanji_poppins_rect, 3, rl.ORANGE)
+draw_kanji_poppins :: proc(kanji_poppins: KanjiPoppins) {
+	letter_idx := kanji_poppins.asked_kanji
+    rl.DrawTextCodepoint(kanji_font, custom_kanji_codepoints[letter_idx], {kanji_poppins.rect.x, kanji_poppins.rect.y}, KANJI_FONT_SIZE, rl.BLACK)
+	rl.DrawRectangleLinesEx(kanji_poppins.rect, 3, rl.ORANGE)
 }
 
 // rect_y is 200, this is where our character is fixed

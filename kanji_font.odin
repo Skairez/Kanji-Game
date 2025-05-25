@@ -35,6 +35,22 @@ Kanji :: enum int {
 	Gray,
 }
 
+// returns a raylib color given a kanji index
+get_color_from_kanji :: proc(kanji: Kanji) -> rl.Color {
+	#partial switch kanji {
+	case .Black: return rl.BLACK
+	case .Red: return rl.RED
+	case .White: return rl.WHITE
+	case .Blue: return rl.BLUE
+	case .Green: return rl.GREEN
+	case .Purple: return rl.PURPLE
+	case .Yellow: return rl.YELLOW 
+	case .Brown: return rl.BROWN
+	case .Gray: return rl.LIGHTGRAY
+	}
+	return rl.WHITE
+}
+
 @(rodata)
 custom_kanji_codepoints := []rune {
 	0x4E00, // 一 (one)
