@@ -45,7 +45,7 @@ get_color_from_kanji :: proc(kanji: Kanji) -> rl.Color {
 	case .Green: return rl.GREEN
 	case .Purple: return rl.PURPLE
 	case .Yellow: return rl.YELLOW 
-	case .Brown: return rl.BROWN
+	case .Brown: return {139, 69, 19, 255}
 	case .Gray: return rl.LIGHTGRAY
 	}
 	return rl.WHITE

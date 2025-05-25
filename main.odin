@@ -26,6 +26,7 @@ cloud_choices := 2
 // globals
 kanji_font: rl.Font
 cloud_texture: rl.Texture
+umbrella_texture: rl.Texture
 
 
 main :: proc() {
@@ -43,6 +44,7 @@ main :: proc() {
 
 	//Load the 1200 * 1200 cloud png
 	cloud_texture = rl.LoadTexture("Graphic/cloud.png")
+	umbrella_texture = rl.LoadTexture("Graphic/panda_colorful.png")
 
 	kanji_font = load_kanji_font()
     kanji_index := 0
@@ -132,7 +134,7 @@ main :: proc() {
 
 		//Score
 		
-		rl.DrawText(fmt.ctprintfln("Score: %v", clouds_correct), 20, 100, 50, rl.BLACK)
+		rl.DrawText(fmt.ctprintfln("Score: %v", clouds_correct), 20, 10, 50, rl.BLACK)
 		
 		// This is the rect of ms poppins that can be moved from left to right.
 		draw_kanji_poppins(kanji_poppins)
@@ -144,7 +146,7 @@ main :: proc() {
 			rl.DrawText("You lost", rl.GetScreenWidth()/2 - 250, rl.GetScreenHeight()/2, 100, rl.BLACK)
 		}
 
-		rl.DrawText(fmt.ctprintfln("speedup: %v", tick_speedup), 20, 0, 50, rl.BLACK)
+		//rl.DrawText(fmt.ctprintfln("speedup: %v", tick_speedup), 20, 0, 50, rl.BLACK)
 		
 		rl.EndDrawing()
 		
