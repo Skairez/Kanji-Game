@@ -27,16 +27,10 @@ kanji_font: rl.Font
 cloud_texture: rl.Texture
 
 
-
-
-
-
 main :: proc() {
 	fmt.println("Hellope!")
 
-	//clouds: [dynamic]Cloud
-
-	//append(&clouds, spawn_cloud(dvnisujdvn))
+	clouds: [dynamic]Cloud
 	
 	//Set the width to 1000, each cloud is 250 wide = 4 clouds fit
 	rl.InitWindow(WINDOW_WIDTH, 1600, "KanjiDrop")
@@ -46,46 +40,76 @@ main :: proc() {
 	cloud_texture = rl.LoadTexture("Graphic/cloud.png")
 
 	kanji_font = load_kanji_font()
-
-    i := 0
-
-	spawn_cloud(clouds, {0, 1400}, number = 1, color = rl.WHITE)
+    kanji_index := 0
 
 	game_is_running := true
 
+	timer: f32 = 3
+	timer_duration: f32 = 3
+
+	tick_speed: f32= 1
+
 	for !rl.WindowShouldClose() {
 
-		
-		rl.BeginDrawing()
-		rl.ClearBackground(rl.Color{135, 206, 250, 255})
-		
-		// This is the rect of ms poppins that can be moved from left to right.
+		tick_speed = rl.IsKeyDown(.LEFT_SHIFT) ? 2 : 1
+
+
+		if game_is_running do timer += rl.GetFrameTime()
+		if timer > timer_duration {
+			timer -= timer_duration
+			spawn_cloud_row(&clouds, cloud_choices = 3)
+			fmt.printfln("Clouds: %v", len(clouds))
+		}
+
+
+		// UPDATE -----
+
 		kanji_poppins_rect := get_kanji_rect_at_mouse_x()
-		draw_kanji_poppins(kanji_poppins_rect, Kanji.One)
 
-		//press N to switch through kanjis
-        if rl.IsKeyPressed(.N) do i+= 1
-        if i > 9 do i = 0
-
-		// Draw the cloud
-		draw_cloud(cloud1)
+		// press N to switch through kanjis
+        if rl.IsKeyPressed(.N) do kanji_index += 1
+        if i32(kanji_index) > custom_kanji_codepoint_count-1 do kanji_index = 0
 
 		if game_is_running {
 
-			elevate_cloud(&cloud1)
+			for &cloud, i in clouds {
+				elevate_cloud(&cloud, 250 * tick_speed)
+				// TODO: add logic if y_kanji < cloud then deactivate hitbox BECAUSE ....
+				if cloud.enabled && rl.CheckCollisionRecs(kanji_poppins_rect, cloud.collision_rect) {
+					game_is_running = false
+					cloud.enabled = false
+				}
 
-			// TODO: add logic if y_kanji < cloud then deactivate hitbox BECAUSE ....
-			if rl.CheckCollisionRecs(kanji_poppins_rect, cloud1.collision_rect) {
-				game_is_running = false
+				// delete clouds that are no longer visible
+				if cloud.rect.y < -cloud.rect.height do unordered_remove(&clouds, i)
 			}
+
 		} else {
-			rl.DrawText("You lost", rl.GetScreenWidth()/2 - 250, rl.GetScreenHeight()/2, 100, rl.BLACK)
 			if rl.IsKeyPressed(.R) {
-				reset_cloud(&cloud1)
 				game_is_running = true
 			}
 		}
 
+
+
+
+
+
+		// DRAW -----
+
+		rl.BeginDrawing()
+		rl.ClearBackground(rl.Color{135, 206, 250, 255})
+		
+		// This is the rect of ms poppins that can be moved from left to right.
+		draw_kanji_poppins(kanji_poppins_rect, kanji_index)
+
+		// Draw the clouds
+		for cloud in clouds do draw_cloud(cloud)
+
+		if !game_is_running {
+			rl.DrawText("You lost", rl.GetScreenWidth()/2 - 250, rl.GetScreenHeight()/2, 100, rl.BLACK)
+		}
+		
 		rl.EndDrawing()
 	}
 }

@@ -12,7 +12,6 @@ load_kanji_font :: proc(kanjiFontPath: cstring = "Fonts/JiyunoTsubasa.ttf", kanj
 	return kanjiFont
 }
 
-
 Kanji :: enum int {
 	One = 0,
 	Two,
@@ -24,6 +23,16 @@ Kanji :: enum int {
 	Eight,
 	Nine,
 	Ten,
+
+	Black,
+	Red,
+	White,
+	Blue,
+	Green,
+	Purple,
+	Yellow,
+	Brown,
+	Gray,
 }
 
 @(rodata)
@@ -38,6 +47,18 @@ custom_kanji_codepoints := []rune {
 	0x516B, // 八 (eight)
 	0x4E5D, // 九 (nine)
 	0x5341, // 十 (ten)
+
+	//Colors
+	0x9ED2, // 黒 (Black)
+	0x8D64, // 赤 (Red)
+	0x767D, // 白 (White)
+	0x9752, // 青 (Blue)
+	0x7DD1, // 緑 (Green)
+	0x7D2B, // 紫 (Purple)
+	0x9EC4, // 黄 (Yellow)
+	0x8336, // 茶 (Brown)
+	0x7070, // 灰 (Gray)
+
 }
 // In Odin, you can get the length of a fixed-size array using `len()`
 custom_kanji_codepoint_count: i32 = i32(len(custom_kanji_codepoints))
